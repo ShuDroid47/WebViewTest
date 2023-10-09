@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+        <variable
+            name="catData"
+            type="com.news2day.webviewtest.models.CategoryData" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="100dp"
+        app:cardElevation="5dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="10dp"
+        android:backgroundTint="#B3E5FB"
+        >
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tv_catName"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.74"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="5dp"
+                android:text="@{catData.name.te}"
+                tools:text="Test Script"
+                android:textSize="@dimen/_20sdp" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                catImage="@{catData.image}"
+                android:id="@+id/iv_catImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.25" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
