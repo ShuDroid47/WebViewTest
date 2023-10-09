@@ -11,8 +11,6 @@ import com.news2day.webviewtest.network.repos.DataRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.function.Function
-import java.util.stream.Collectors
 
 class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewModel() {
     private var catLiveDataList = MutableLiveData<ArrayList<CategoryData>>()
