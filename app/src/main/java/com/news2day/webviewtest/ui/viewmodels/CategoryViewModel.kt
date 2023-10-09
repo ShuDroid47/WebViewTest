@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.news2day.webviewtest.R
+import com.news2day.webviewtest.helpers.ApiExceptions
 import com.news2day.webviewtest.helpers.Coroutines
 import com.news2day.webviewtest.models.CatResposeData
 import com.news2day.webviewtest.models.CategoryData
@@ -43,16 +44,18 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
 
     fun getCatDataList(){
         Coroutines.main {
-            val response = mRepo.getCatData()
-            if(response.isSuccessful) {
-                response.body()?.also {
-                    catLiveDataList.value = ArrayList(it.data)
+            try{
+                val catResponse = mRepo.getCatData()
+                if(catResponse.isSuccessful) {
+                    catResponse.let {
+                        catLiveDataList.value = it.body()?.data?.let { it1 -> ArrayList(it1) }
+                    }
+                }else{
+                    errorMessage.value = "No News Found."
                 }
+            }catch (e: ApiExceptions){
+                errorMessage.value = e.message
             }
-            else
-                response.errorBody().also {
-                    errorMessage.value = it.toString()
-                }
         }
 
     }

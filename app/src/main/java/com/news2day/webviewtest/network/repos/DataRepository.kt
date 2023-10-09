@@ -7,7 +7,6 @@ import com.news2day.webviewtest.network.ApiService
 import retrofit2.Response
 
 class DataRepository(private val apiService : ApiService) {
-    val errorMsge = MutableLiveData<String>()
     suspend fun getCatData() : Response<CatResposeData> {
        return apiService.getCatList(Constants.headerToken)
     }
