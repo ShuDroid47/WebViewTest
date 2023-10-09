@@ -30,6 +30,7 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
         viewModel.getCatDataList()
 
         viewModel.catList.observe(this, Observer { dataList ->
+            setNoRefresh()
             binding.rvCatList.also {
                 it.setHasFixedSize(true)
                 it.layoutManager = LinearLayoutManager(this)
@@ -46,19 +47,31 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
                 ).show()
             }
         })
-
+        //binding.srlRefresh.isEnabled = true
         binding.srlRefresh.setOnRefreshListener(this:: onRefresh)
+        binding.btnSort.setOnClickListener(this::onClick)
+        binding.btnUpdate.setOnClickListener(this::onClick)
+    }
+
+    private fun onClick(view: View?) {
+        viewModel.onClickEvents(view!!)
+    }
+
+    private fun setNoRefresh() {
+        if (binding.srlRefresh.isRefreshing)
+            binding.srlRefresh.isRefreshing = false
     }
 
     private fun onRefresh() {
         viewModel.refreshScreen()
     }
 
-    override fun onItemClick(view: View, adapterData: CategoryData) {
+    override fun onRvItemClick(view: View, adapterData: CategoryData) {
         Toast.makeText(
             this,
             adapterData.name.te + "Clicked",
             Toast.LENGTH_LONG
         ).show()
     }
+    
 }

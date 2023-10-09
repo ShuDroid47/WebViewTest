@@ -1,20 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        <com.news2day.webviewtest.helpers.SwipeRefresh
             android:id="@+id/srl_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            >
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/rv_catList" />
 
+        </com.news2day.webviewtest.helpers.SwipeRefresh>
+        
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_alignParentBottom="true"
+            >
+            
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Sort"
+                android:layout_weight="0.5"
+                android:id="@+id/btn_sort" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="update"
+                android:layout_weight="0.5"
+                android:id="@+id/btn_update"
+                />
+            
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </RelativeLayout>
 </layout>

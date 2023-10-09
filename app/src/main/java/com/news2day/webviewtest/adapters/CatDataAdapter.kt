@@ -30,7 +30,7 @@ class CatDataAdapter constructor(
         holder.rvItemView.catData = catData
 
         holder.rvItemView.cvParent.setOnClickListener {
-            listener.onItemClick(
+            listener.onRvItemClick(
                 holder.rvItemView.cvParent,
                 catDataList[position]
             )

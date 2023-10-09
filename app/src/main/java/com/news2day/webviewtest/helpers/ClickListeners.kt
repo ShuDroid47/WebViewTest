@@ -4,5 +4,5 @@ import android.view.View
 import com.news2day.webviewtest.models.CategoryData
 
 interface CatAdapterClickListener{
-    fun onItemClick(view: View, adapterData: CategoryData)
+    fun onRvItemClick(view: View, adapterData: CategoryData)
 }
