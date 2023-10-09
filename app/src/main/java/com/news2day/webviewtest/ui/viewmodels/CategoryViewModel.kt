@@ -13,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewModel() {
-    private var catLiveDataList = MutableLiveData<ArrayList<CategoryData>>()
+    private val catLiveDataList = MutableLiveData<ArrayList<CategoryData>>()
 
     val catList: LiveData<ArrayList<CategoryData>>
         get() = catLiveDataList

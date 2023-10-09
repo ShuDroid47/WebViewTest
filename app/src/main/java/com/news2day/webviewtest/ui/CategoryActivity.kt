@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.news2day.webviewtest.R
@@ -29,16 +28,16 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
 
         viewModel.getCatDataList()
 
-        viewModel.catList.observe(this, Observer { dataList ->
+        viewModel.catList.observe(this) { dataList ->
             setNoRefresh()
             binding.rvCatList.also {
                 it.setHasFixedSize(true)
                 it.layoutManager = LinearLayoutManager(this)
                 it.adapter = CatDataAdapter(dataList, this)
             }
-        })
+        }
 
-        viewModel.errorMessage.observe(this, Observer { msge ->
+        viewModel.errorMessage.observe(this) {
             String.also {
                 Toast.makeText(
                     this,
@@ -46,7 +45,8 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        })
+        }
+
         //binding.srlRefresh.isEnabled = true
         binding.srlRefresh.setOnRefreshListener(this:: onRefresh)
         binding.btnSort.setOnClickListener(this::onClick)
@@ -73,5 +73,5 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
             Toast.LENGTH_LONG
         ).show()
     }
-    
+
 }
