@@ -24,7 +24,7 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_category)
-        viewModel = ViewModelProvider(this, CategoryVmFactory(DataRepository(ApiService()))).get(CategoryViewModel :: class.java)
+        viewModel = ViewModelProvider(this, CategoryVmFactory(DataRepository(ApiService())))[CategoryViewModel :: class.java]
 
         viewModel.getCatDataList()
 

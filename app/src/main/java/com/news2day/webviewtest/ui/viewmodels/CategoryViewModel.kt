@@ -1,12 +1,15 @@
 package com.news2day.webviewtest.ui.viewmodels
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.news2day.webviewtest.R
+import com.news2day.webviewtest.helpers.Coroutines
 import com.news2day.webviewtest.models.CatResposeData
 import com.news2day.webviewtest.models.CategoryData
+import com.news2day.webviewtest.network.ApiService
 import com.news2day.webviewtest.network.repos.DataRepository
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,21 +42,19 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
     }
 
     fun getCatDataList(){
-        val response = mRepo.getCatData()
-        response.enqueue(object : Callback<CatResposeData>{
-            override fun onResponse(
-                call: Call<CatResposeData>,
-                response: Response<CatResposeData>
-            ) {
-                response.body()?.data.also {
-                    catLiveDataList.value = it?.let { it1 -> ArrayList(it1) }
+        Coroutines.main {
+            val response = mRepo.getCatData()
+            if(response.isSuccessful) {
+                response.body()?.also {
+                    catLiveDataList.value = ArrayList(it.data)
                 }
             }
+            else
+                response.errorBody().also {
+                    errorMessage.value = it.toString()
+                }
+        }
 
-            override fun onFailure(call: Call<CatResposeData>, t: Throwable) {
-                errorMessage.postValue(t.message)
-            }
-        })
     }
 
     fun onClickEvents (view: View){
