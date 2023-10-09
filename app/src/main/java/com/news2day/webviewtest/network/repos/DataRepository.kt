@@ -1,6 +1,5 @@
 package com.news2day.webviewtest.network.repos
 
-import androidx.lifecycle.MutableLiveData
 import com.news2day.webviewtest.constants.Constants
 import com.news2day.webviewtest.models.CatResposeData
 import com.news2day.webviewtest.network.ApiService
