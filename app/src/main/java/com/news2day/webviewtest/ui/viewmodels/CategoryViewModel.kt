@@ -8,13 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.news2day.webviewtest.R
 import com.news2day.webviewtest.helpers.ApiExceptions
 import com.news2day.webviewtest.helpers.Coroutines
-import com.news2day.webviewtest.models.CatResposeData
-import com.news2day.webviewtest.models.CategoryData
-import com.news2day.webviewtest.network.ApiService
+import com.news2day.webviewtest.network.models.CategoryData
 import com.news2day.webviewtest.network.repos.DataRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewModel() {
     private val catLiveDataList = MutableLiveData<ArrayList<CategoryData>>()
@@ -49,6 +44,7 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
                 if(catResponse.isSuccessful) {
                     catResponse.let {
                         catLiveDataList.value = it.body()?.data?.let { it1 -> ArrayList(it1) }
+                        return@let Log.d("DataResponse","DataListSize: ${catList.value?.size}")
                     }
                 }else{
                     errorMessage.value = "No News Found."
@@ -58,6 +54,21 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
             }
         }
 
+    }
+
+    fun getCatDataList2(){
+        Coroutines.main {
+            try{
+                val catResponse = mRepo.getCatDataResponse()
+
+                    catResponse.let {
+                        catLiveDataList.value = ArrayList(it.data)
+                        return@let Log.d("DataResponse", "DataListSize: ${catList.value?.size}")
+                    }
+            }catch (e: ApiExceptions){
+                errorMessage.value = e.message
+            }
+        }
     }
 
     fun onClickEvents (view: View){

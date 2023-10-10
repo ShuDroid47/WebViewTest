@@ -1,4 +1,4 @@
-package com.news2day.webviewtest.models
+package com.news2day.webviewtest.network.models
 
 data class Data(
     val __v: Int,

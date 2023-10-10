@@ -1,13 +1,19 @@
 package com.news2day.webviewtest.network.repos
 
-import com.news2day.webviewtest.constants.Constants
-import com.news2day.webviewtest.models.CatResposeData
+import com.news2day.webviewtest.network.models.CatResposeData
 import com.news2day.webviewtest.network.ApiService
+import com.news2day.webviewtest.network.SafeApiRequest
 import retrofit2.Response
 
-class DataRepository(private val apiService : ApiService) {
-    suspend fun getCatData() : Response<CatResposeData> {
-       return apiService.getCatList(Constants.headerToken)
+class DataRepository(private val apiService : ApiService) : SafeApiRequest() {
+    suspend fun getCatData(): Response<CatResposeData> {
+        return apiService.getCatList()
+    }
+
+    suspend fun getCatDataResponse() : CatResposeData {
+       return apiRequest {
+            apiService.getCatList()
+        }
     }
 }
 

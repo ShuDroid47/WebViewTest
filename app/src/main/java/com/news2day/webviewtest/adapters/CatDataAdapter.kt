@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.news2day.webviewtest.R
 import com.news2day.webviewtest.databinding.RvItemCategoryBinding
 import com.news2day.webviewtest.helpers.CatAdapterClickListener
-import com.news2day.webviewtest.models.CategoryData
+import com.news2day.webviewtest.network.models.CategoryData
 
 class CatDataAdapter constructor(
     private var catDataList: ArrayList<CategoryData>,

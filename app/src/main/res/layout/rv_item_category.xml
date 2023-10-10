@@ -8,7 +8,7 @@
         <import type="android.view.View" />
         <variable
             name="catData"
-            type="com.news2day.webviewtest.models.CategoryData" />
+            type="com.news2day.webviewtest.network.models.CategoryData" />
 
     </data>
 

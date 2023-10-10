@@ -1,6 +1,7 @@
 package com.news2day.webviewtest.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,7 @@ import com.news2day.webviewtest.R
 import com.news2day.webviewtest.adapters.CatDataAdapter
 import com.news2day.webviewtest.databinding.ActivityCategoryBinding
 import com.news2day.webviewtest.helpers.CatAdapterClickListener
-import com.news2day.webviewtest.models.CategoryData
+import com.news2day.webviewtest.network.models.CategoryData
 import com.news2day.webviewtest.network.ApiService
 import com.news2day.webviewtest.network.repos.DataRepository
 import com.news2day.webviewtest.ui.fatorymodels.CategoryVmFactory
@@ -23,17 +24,26 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
     private lateinit var binding : ActivityCategoryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_category)
-        viewModel = ViewModelProvider(this, CategoryVmFactory(DataRepository(ApiService())))[CategoryViewModel :: class.java]
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_category
+        )
 
-        viewModel.getCatDataList()
+        viewModel = ViewModelProvider(this,
+            CategoryVmFactory(DataRepository(ApiService()))
+        ).get(CategoryViewModel :: class.java)
+
+        //viewModel.getCatDataList()
+        viewModel.getCatDataList2()
 
         viewModel.catList.observe(this) { dataList ->
             setNoRefresh()
             binding.rvCatList.also {
-                it.setHasFixedSize(true)
-                it.layoutManager = LinearLayoutManager(this)
-                it.adapter = CatDataAdapter(dataList, this)
+                Log.e("DataList Size: ", "Size: ${dataList.size}")
+                if(dataList.size>0) {
+                    it.setHasFixedSize(true)
+                    it.layoutManager = LinearLayoutManager(this)
+                    it.adapter = CatDataAdapter(dataList, this)
+                }
             }
         }
 
