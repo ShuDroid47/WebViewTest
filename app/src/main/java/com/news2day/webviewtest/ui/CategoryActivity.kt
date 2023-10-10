@@ -13,13 +13,17 @@ import com.news2day.webviewtest.adapters.CatDataAdapter
 import com.news2day.webviewtest.databinding.ActivityCategoryBinding
 import com.news2day.webviewtest.helpers.CatAdapterClickListener
 import com.news2day.webviewtest.network.models.CategoryData
-import com.news2day.webviewtest.network.ApiService
-import com.news2day.webviewtest.network.NetworkConnectionInterceptor
-import com.news2day.webviewtest.network.repos.DataRepository
 import com.news2day.webviewtest.ui.fatorymodels.CategoryVmFactory
 import com.news2day.webviewtest.ui.viewmodels.CategoryViewModel
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.closestDI
+import org.kodein.di.instance
 
-class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
+class CategoryActivity : AppCompatActivity(), CatAdapterClickListener, DIAware {
+
+    override val di: DI by closestDI()
+    private val factory : CategoryVmFactory by instance()
 
     private lateinit var viewModel : CategoryViewModel
     private lateinit var binding : ActivityCategoryBinding
@@ -30,7 +34,7 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
         )
 
         viewModel = ViewModelProvider(this,
-            CategoryVmFactory(DataRepository(ApiService(NetworkConnectionInterceptor(this))))
+            factory
         )[CategoryViewModel :: class.java]
 
         //viewModel.getCatDataList()
@@ -90,5 +94,4 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
             Toast.LENGTH_LONG
         ).show()
     }
-
 }
