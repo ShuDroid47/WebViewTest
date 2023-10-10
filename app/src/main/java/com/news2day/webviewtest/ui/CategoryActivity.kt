@@ -14,6 +14,7 @@ import com.news2day.webviewtest.databinding.ActivityCategoryBinding
 import com.news2day.webviewtest.helpers.CatAdapterClickListener
 import com.news2day.webviewtest.network.models.CategoryData
 import com.news2day.webviewtest.network.ApiService
+import com.news2day.webviewtest.network.NetworkConnectionInterceptor
 import com.news2day.webviewtest.network.repos.DataRepository
 import com.news2day.webviewtest.ui.fatorymodels.CategoryVmFactory
 import com.news2day.webviewtest.ui.viewmodels.CategoryViewModel
@@ -29,38 +30,44 @@ class CategoryActivity : AppCompatActivity(), CatAdapterClickListener {
         )
 
         viewModel = ViewModelProvider(this,
-            CategoryVmFactory(DataRepository(ApiService()))
-        ).get(CategoryViewModel :: class.java)
+            CategoryVmFactory(DataRepository(ApiService(NetworkConnectionInterceptor(this))))
+        )[CategoryViewModel :: class.java]
 
         //viewModel.getCatDataList()
         viewModel.getCatDataList2()
 
+        setDataListObserver()
+
+        errorMessageObserver()
+
+        //binding.srlRefresh.isEnabled = true
+        binding.srlRefresh.setOnRefreshListener(this:: onRefresh)
+        binding.btnSort.setOnClickListener(this::onClick)
+        binding.btnUpdate.setOnClickListener(this::onClick)
+    }
+
+    private fun errorMessageObserver() {
+        viewModel.errorMessage.observe(this) {
+            Toast.makeText(
+                this,
+                it,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun setDataListObserver() {
         viewModel.catList.observe(this) { dataList ->
             setNoRefresh()
             binding.rvCatList.also {
                 Log.e("DataList Size: ", "Size: ${dataList.size}")
-                if(dataList.size>0) {
+                if (dataList.size > 0) {
                     it.setHasFixedSize(true)
                     it.layoutManager = LinearLayoutManager(this)
                     it.adapter = CatDataAdapter(dataList, this)
                 }
             }
         }
-
-        viewModel.errorMessage.observe(this) {
-            String.also {
-                Toast.makeText(
-                    this,
-                    "Check with Network",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-
-        //binding.srlRefresh.isEnabled = true
-        binding.srlRefresh.setOnRefreshListener(this:: onRefresh)
-        binding.btnSort.setOnClickListener(this::onClick)
-        binding.btnUpdate.setOnClickListener(this::onClick)
     }
 
     private fun onClick(view: View?) {

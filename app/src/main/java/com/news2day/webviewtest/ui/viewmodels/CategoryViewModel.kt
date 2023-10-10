@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.news2day.webviewtest.R
 import com.news2day.webviewtest.helpers.ApiExceptions
 import com.news2day.webviewtest.helpers.Coroutines
+import com.news2day.webviewtest.helpers.NoInternetException
 import com.news2day.webviewtest.network.models.CategoryData
 import com.news2day.webviewtest.network.repos.DataRepository
 
@@ -17,11 +18,12 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
     val catList: LiveData<ArrayList<CategoryData>>
         get() = catLiveDataList
 
-    val errorMessage = MutableLiveData<String>()
+    var errorMessage = MutableLiveData<String>()
 
     fun refreshScreen(){
          catLiveDataList.value =ArrayList<CategoryData>()
-        getCatDataList()
+        //getCatDataList()
+        getCatDataList2()
     }
 
     private fun sortList() {
@@ -37,24 +39,24 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
         catLiveDataList.value = catLiveDataList.value
     }
 
-    fun getCatDataList(){
-        Coroutines.main {
-            try{
-                val catResponse = mRepo.getCatData()
-                if(catResponse.isSuccessful) {
-                    catResponse.let {
-                        catLiveDataList.value = it.body()?.data?.let { it1 -> ArrayList(it1) }
-                        return@let Log.d("DataResponse","DataListSize: ${catList.value?.size}")
-                    }
-                }else{
-                    errorMessage.value = "No News Found."
-                }
-            }catch (e: ApiExceptions){
-                errorMessage.value = e.message
-            }
-        }
-
-    }
+//    fun getCatDataList(){
+//        Coroutines.main {
+//            try{
+//                val catResponse = mRepo.getCatData()
+//                if(catResponse.isSuccessful) {
+//                    catResponse.let {
+//                        catLiveDataList.value = it.body()?.data?.let { it1 -> ArrayList(it1) }
+//                        return@let Log.d("DataResponse","DataListSize: ${catList.value?.size}")
+//                    }
+//                }else{
+//                    errorMessage.value = "No News Found."
+//                }
+//            }catch (e: ApiExceptions){
+//                errorMessage.value = e.message
+//            }
+//        }
+//
+//    }
 
     fun getCatDataList2(){
         Coroutines.main {
@@ -66,6 +68,8 @@ class CategoryViewModel constructor(private val mRepo : DataRepository) : ViewMo
                         return@let Log.d("DataResponse", "DataListSize: ${catList.value?.size}")
                     }
             }catch (e: ApiExceptions){
+                errorMessage.value = e.message
+            }catch (e: NoInternetException){
                 errorMessage.value = e.message
             }
         }
